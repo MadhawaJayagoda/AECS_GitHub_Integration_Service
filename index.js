@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 
 // Fetch the number of commits for a user
 app.get("/github/commits/:username", async (req, res) => {
-  const { username } = req.params;
+  const username = req.params.username;
 
   try {
     const response = await axios.get(
@@ -31,15 +31,15 @@ app.get("/github/commits/:username", async (req, res) => {
       commitCount += commitsResponse.data.length;
     }
 
-    res.json({ commits: commitCount });
+    res.send(commitCount);
   } catch (error) {
-    res.status(error.response?.status || 500).json({ error: error.message });
+    res.status(500).send(error);
   }
 });
 
 // Fetch the total number of releases for a user
 app.get("/github/releases/:username", async (req, res) => {
-  const { username } = req.params;
+  const username = req.params.username;
 
   try {
     const reposResponse = await axios.get(
@@ -51,7 +51,6 @@ app.get("/github/releases/:username", async (req, res) => {
       }
     );
 
-    // Initialize a counter for total releases
     let totalReleases = 0;
 
     // Loop through the user's repositories and fetch releases
@@ -67,15 +66,15 @@ app.get("/github/releases/:username", async (req, res) => {
       totalReleases += releasesResponse.data.length;
     }
 
-    res.json({ total_releases: totalReleases });
+    res.send(totalReleases);
   } catch (error) {
-    res.status(error.response?.status || 500).json({ error: error.message });
+    res.status(500).send(error);
   }
 });
 
 // Fetch the number of pull requests for a user
 app.get("/github/pullrequests/:username", async (req, res) => {
-  const { username } = req.params;
+  const username = req.params.username;
 
   try {
     const response = await axios.get(
@@ -100,15 +99,15 @@ app.get("/github/pullrequests/:username", async (req, res) => {
       prCount += prsResponse.data.length;
     }
 
-    res.json({ pull_requests: prCount });
+    res.send(prCount);
   } catch (error) {
-    res.status(error.response?.status || 500).json({ error: error.message });
+    res.status(500).send(error);
   }
 });
 
 // Fetch the number of issues for a user
 app.get("/github/issues/:username", async (req, res) => {
-  const { username } = req.params;
+  const username = req.params.username;
 
   try {
     const issuesResponse = await axios.get(
@@ -121,9 +120,9 @@ app.get("/github/issues/:username", async (req, res) => {
     );
     const issueCount = issuesResponse.data.total_count;
 
-    res.json({ issues: issueCount });
+    res.send(issueCount);
   } catch (error) {
-    res.status(error.response?.status || 500).json({ error: error.message });
+    res.status(500).send(error);
   }
 });
 
